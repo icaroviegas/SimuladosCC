@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Front 1</title>
+  <style>
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #020617;
+      --card-bg: #0f172a;
+      --card-border: #1e293b;
+      --card-inner: #020617;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #cbd5e1;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --emerald: #10b981;
+      --emerald-hover: #059669;
+      --emerald-light: #6ee7b7;
+      --emerald-bg: rgba(16, 185, 129, 0.15);
+      --emerald-ring: rgba(52, 211, 153, 0.5);
+      --rose: #f43f5e;
+      --rose-light: #fda4af;
+      --rose-bg: rgba(244, 63, 94, 0.15);
+      --rose-ring: rgba(251, 113, 133, 0.5);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 32px;
+      }
+    }
+
+    .container {
+      max-width: 896px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .container-wide {
+      max-width: 1024px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .header-top {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      background-color: rgba(99, 102, 241, 0.15);
+      color: #c7d2fe;
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      width: fit-content;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      margin-top: 12px;
+      color: #ffffff;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.75rem;
+      }
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .score-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 20px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      min-width: 150px;
+    }
+
+    .score-card-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .score-card-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 2px;
+    }
+
+    .progress-track {
+      height: 12px;
+      border-radius: 9999px;
+      background-color: #1e293b;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(to right, #6366f1, #d946ef);
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .panel {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (min-width: 768px) {
+      .panel {
+        padding: 32px;
+      }
+    }
+
+    .question-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .question-header {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+    }
+
+    .topic-tag {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #a5b4fc;
+    }
+
+    .question-text {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #ffffff;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .question-text {
+        font-size: 1.65rem;
+      }
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      width: fit-content;
+      white-space: nowrap;
+    }
+
+    .status-badge.ok {
+      background-color: var(--emerald-bg);
+      color: var(--emerald-light);
+      border: 1px solid var(--emerald-ring);
+    }
+
+    .status-badge.bad {
+      background-color: var(--rose-bg);
+      color: var(--rose-light);
+      border: 1px solid var(--rose-ring);
+    }
+
+    pre.code-block {
+      background-color: var(--card-inner);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.925rem;
+      color: #e2e8f0;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      text-align: left;
+      padding: 16px;
+      border-radius: 16px;
+      background-color: var(--card-inner);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+
+    .option-btn:hover:not(.locked) {
+      background-color: #1e293b;
+      border-color: #334155;
+    }
+
+    .option-btn.selected:not(.locked) {
+      background-color: rgba(99, 102, 241, 0.15);
+      border-color: #818cf8;
+      box-shadow: 0 0 0 1px #818cf8;
+    }
+
+    .option-btn.correct {
+      background-color: var(--emerald-bg) !important;
+      border-color: #34d399 !important;
+      box-shadow: 0 0 0 1px #34d399 !important;
+    }
+
+    .option-btn.wrong {
+      background-color: var(--rose-bg) !important;
+      border-color: #fb7185 !important;
+      box-shadow: 0 0 0 1px #fb7185 !important;
+    }
+
+    .option-text {
+      font-weight: 500;
+      white-space: pre-line;
+      flex: 1;
+    }
+
+    .icon-symbol {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+
+    .icon-symbol.ok {
+      color: var(--emerald-light);
+    }
+
+    .icon-symbol.bad {
+      color: var(--rose-light);
+    }
+
+    .explanation-box {
+      background-color: var(--card-inner);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 20px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .explanation-title {
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .explanation-text {
+      color: var(--text-subtle);
+      font-size: 0.95rem;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .actions-row {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: none;
+      font-family: var(--font-sans);
+      user-select: none;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: #1e293b;
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: #334155;
+    }
+
+    .btn-emerald {
+      background-color: var(--emerald);
+      color: #ffffff;
+    }
+
+    .btn-emerald:hover:not(:disabled) {
+      background-color: var(--emerald-hover);
+    }
+
+    .btn-outline {
+      background-color: var(--bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background-color: #1e293b;
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .nav-grid {
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .nav-grid {
+        grid-template-columns: repeat(13, minmax(0, 1fr));
+      }
+    }
+
+    .nav-pill {
+      height: 40px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .nav-pill:hover {
+      background-color: #1e293b;
+    }
+
+    .nav-pill.current {
+      background-color: rgba(99, 102, 241, 0.3) !important;
+      border-color: #a5b4fc !important;
+      box-shadow: 0 0 0 1px #a5b4fc;
+      color: #ffffff;
+    }
+
+    .nav-pill.ok {
+      background-color: rgba(16, 185, 129, 0.2);
+      border-color: rgba(52, 211, 153, 0.5);
+      color: #a7f3d0;
+    }
+
+    .nav-pill.bad {
+      background-color: rgba(244, 63, 94, 0.2);
+      border-color: rgba(251, 113, 133, 0.5);
+      color: #fecdd3;
+    }
+
+    .trophy-gradient-wrapper {
+      border-radius: 24px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+      padding: 3px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .trophy-card {
+      background-color: rgba(2, 6, 23, 0.95);
+      border-radius: 21px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .trophy-card {
+        padding: 48px;
+      }
+    }
+
+    .trophy-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.25rem;
+    }
+
+    .trophy-score {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-top: 16px;
+      line-height: 1;
+    }
+
+    @media (min-width: 768px) {
+      .trophy-score {
+        font-size: 4.5rem;
+      }
+    }
+
+    .trophy-percent {
+      font-size: 1.25rem;
+      color: var(--text-subtle);
+      margin-top: 8px;
+    }
+
+    .trophy-msg {
+      font-size: 1.125rem;
+      color: #e2e8f0;
+      margin-top: 12px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .trophy-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    @media (min-width: 640px) {
+      .trophy-actions {
+        flex-direction: row;
+      }
+    }
+
+    .review-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-item {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .review-item {
+        padding: 24px;
+      }
+    }
+
+    .review-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .review-details {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 0.875rem;
+    }
+
+    .text-ok {
+      color: var(--emerald-light);
+      font-weight: 600;
+    }
+
+    .text-bad {
+      color: var(--rose-light);
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .keyboard-hint {
+      font-size: 0.75rem;
+      color: #64748b;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const quizConfig = {
+  "title": "Simulado Front 1",
+  "badge": "💻",
+  "subtitle": "Clique na alternativa, confirme e veja imediatamente se acertou."
+};
+    const questions = [
+  {
+    "id": 1,
+    "topic": "Formulários HTML",
+    "question": "Qual tag HTML é utilizada para definir um formulário?",
+    "code": "",
+    "options": [
+      "<form>",
+      "<input>",
+      "<field>",
+      "<data>"
+    ],
+    "answer": 0,
+    "explanation": "A tag <form> é utilizada para definir um formulário em HTML, envolvendo todos os campos de entrada de dados."
+  },
+  {
+    "id": 2,
+    "topic": "Formulários HTML",
+    "question": "Qual tag é usada para definir um campo de entrada de dados em um formulário?",
+    "code": "",
+    "options": [
+      "<label>",
+      "<input>",
+      "<select>",
+      "<textarea>"
+    ],
+    "answer": 1,
+    "explanation": "A tag <input> é usada para criar campos de entrada de dados como texto, e-mail, senha, entre outros."
+  },
+  {
+    "id": 3,
+    "topic": "Formulários HTML",
+    "question": "Qual é a função da tag <label> em um formulário?",
+    "code": "",
+    "options": [
+      "Definir um botão de envio",
+      "Rotular um item em um formulário",
+      "Criar uma lista suspensa",
+      "Definir uma área de texto multilinha"
+    ],
+    "answer": 1,
+    "explanation": "A tag <label> é usada para rotular um item em um formulário, conectando um texto descritivo a um campo."
+  },
+  {
+    "id": 4,
+    "topic": "Formulários HTML",
+    "question": "Qual tag define um botão em um formulário HTML?",
+    "code": "",
+    "options": [
+      "<btn>",
+      "<input>",
+      "<button>",
+      "<submit>"
+    ],
+    "answer": 2,
+    "explanation": "A tag <button> define um botão que pode ser usado para enviar, resetar ou executar ações personalizadas em um formulário."
+  },
+  {
+    "id": 5,
+    "topic": "Formulários HTML",
+    "question": "Qual tag é usada para definir uma lista suspensa em um formulário?",
+    "code": "",
+    "options": [
+      "<option>",
+      "<list>",
+      "<select>",
+      "<dropdown>"
+    ],
+    "answer": 2,
+    "explanation": "A tag <select> é usada para criar uma lista suspensa (menu suspenso) em um formulário HTML."
+  },
+  {
+    "id": 6,
+    "topic": "Formulários HTML",
+    "question": "Qual tag define uma opção dentro de uma lista suspensa?",
+    "code": "",
+    "options": [
+      "<select>",
+      "<item>",
+      "<option>",
+      "<choice>"
+    ],
+    "answer": 2,
+    "explanation": "A tag <option> define uma opção individual dentro de um elemento <select>."
+  },
+  {
+    "id": 7,
+    "topic": "Formulários HTML",
+    "question": "Qual tag é utilizada para definir uma área de texto multilinha?",
+    "code": "",
+    "options": [
+      "<input type='text'>",
+      "<textarea>",
+      "<textbox>",
+      "<multitext>"
+    ],
+    "answer": 1,
+    "explanation": "A tag <textarea> é usada para criar campos de texto de múltiplas linhas em formulários."
+  },
+  {
+    "id": 8,
+    "topic": "Formulários HTML",
+    "question": "Qual atributo da tag <form> define o destino para onde os dados serão enviados?",
+    "code": "",
+    "options": [
+      "method",
+      "action",
+      "target",
+      "destination"
+    ],
+    "answer": 1,
+    "explanation": "O atributo action define o destino (URL ou script do servidor) para onde os dados do formulário serão enviados."
+  },
+  {
+    "id": 9,
+    "topic": "Formulários HTML",
+    "question": "Qual atributo da tag <form> define o método de envio dos dados (GET ou POST)?",
+    "code": "",
+    "options": [
+      "action",
+      "method",
+      "type",
+      "send"
+    ],
+    "answer": 1,
+    "explanation": "O atributo method define a forma de envio dos dados do formulário, podendo ser GET ou POST."
+  },
+  {
+    "id": 10,
+    "topic": "Método GET",
+    "question": "Como os dados são enviados quando se utiliza o método GET em um formulário?",
+    "code": "",
+    "options": [
+      "No corpo da requisição HTTP",
+      "Na URL, após o caractere ?",
+      "Em um cabeçalho oculto",
+      "Por meio de cookies apenas"
+    ],
+    "answer": 1,
+    "explanation": "No método GET, os dados são enviados como parte da URL, aparecendo após o caractere ? (exemplo: ?nome=Ana&idade=25)."
+  },
+  {
+    "id": 11,
+    "topic": "Método GET",
+    "question": "Para qual tipo de situação o método GET é mais indicado?",
+    "code": "",
+    "options": [
+      "Envio de senhas",
+      "Upload de arquivos grandes",
+      "Consultas, pesquisas e filtros",
+      "Dados sensíveis"
+    ],
+    "answer": 2,
+    "explanation": "O método GET é indicado para consultas, pesquisas e filtros, pois os dados não são sensíveis e podem ser compartilhados via URL."
+  },
+  {
+    "id": 12,
+    "topic": "Método POST",
+    "question": "Onde os dados são enviados quando se utiliza o método POST?",
+    "code": "",
+    "options": [
+      "Na URL, visível ao usuário",
+      "No corpo da requisição HTTP",
+      "Apenas em cookies",
+      "No cabeçalho do navegador"
+    ],
+    "answer": 1,
+    "explanation": "No método POST, os dados são enviados no corpo da requisição HTTP, não aparecendo na URL."
+  },
+  {
+    "id": 13,
+    "topic": "Método POST",
+    "question": "Qual das opções é uma vantagem do método POST em relação ao GET?",
+    "code": "",
+    "options": [
+      "É mais rápido para pesquisas simples",
+      "Permite envio de dados sensíveis com mais segurança que o GET",
+      "É armazenado em cache por padrão",
+      "Tem limite de caracteres menor"
+    ],
+    "answer": 1,
+    "explanation": "O método POST é mais indicado para dados sensíveis, como senhas, pois não expõe os dados na URL, sendo mais seguro que o GET (ainda que precise de HTTPS para segurança completa)."
+  },
+  {
+    "id": 14,
+    "topic": "Comparação GET vs POST",
+    "question": "Qual método HTTP é geralmente armazenado em cache e pode ser adicionado aos favoritos (bookmark)?",
+    "code": "",
+    "options": [
+      "POST",
+      "GET",
+      "PUT",
+      "DELETE"
+    ],
+    "answer": 1,
+    "explanation": "O método GET pode ser armazenado em cache pelo navegador e adicionado aos favoritos, já que os dados fazem parte da própria URL."
+  },
+  {
+    "id": 15,
+    "topic": "Comparação GET vs POST",
+    "question": "Qual método NÃO possui limite prático de tamanho para envio de dados?",
+    "code": "",
+    "options": [
+      "GET",
+      "POST",
+      "HEAD",
+      "OPTIONS"
+    ],
+    "answer": 1,
+    "explanation": "O método POST não possui limite prático de tamanho para envio de dados, sendo indicado para formulários grandes e upload de arquivos."
+  },
+  {
+    "id": 16,
+    "topic": "Rótulos (label)",
+    "question": "Qual atributo da tag <label> associa o rótulo a um campo de formulário específico?",
+    "code": "",
+    "options": [
+      "name",
+      "id",
+      "for",
+      "target"
+    ],
+    "answer": 2,
+    "explanation": "O atributo for da tag <label> associa o rótulo a um campo pelo valor do atributo id do campo correspondente."
+  },
+  {
+    "id": 17,
+    "topic": "Rótulos (label)",
+    "question": "Qual é o benefício de usar corretamente a tag <label> associada a um campo de input?",
+    "code": "",
+    "options": [
+      "Aumenta o tamanho do campo automaticamente",
+      "Melhora a usabilidade e acessibilidade, permitindo clicar no texto para ativar o campo",
+      "Impede o envio do formulário",
+      "Substitui o atributo required"
+    ],
+    "answer": 1,
+    "explanation": "O uso correto de <label> melhora a usabilidade e acessibilidade, especialmente para leitores de tela, e permite que o clique no texto ative o campo correspondente."
+  },
+  {
+    "id": 18,
+    "topic": "Tag input",
+    "question": "Qual atributo da tag <input> define o tipo de dado a ser inserido?",
+    "code": "",
+    "options": [
+      "name",
+      "type",
+      "value",
+      "kind"
+    ],
+    "answer": 1,
+    "explanation": "O atributo type é o principal atributo da tag <input>, definindo o tipo de dado esperado (texto, e-mail, senha, número, etc.)."
+  },
+  {
+    "id": 19,
+    "topic": "Tag input",
+    "question": "Qual atributo identifica o campo de input para envio dos dados no formulário?",
+    "code": "",
+    "options": [
+      "id",
+      "name",
+      "class",
+      "for"
+    ],
+    "answer": 1,
+    "explanation": "O atributo name identifica o campo no envio do formulário, sendo essencial para que o servidor reconheça o dado enviado."
+  },
+  {
+    "id": 20,
+    "topic": "Tag input",
+    "question": "Qual atributo exibe um texto de dica dentro do campo antes de o usuário digitar algo?",
+    "code": "",
+    "options": [
+      "value",
+      "placeholder",
+      "title",
+      "alt"
+    ],
+    "answer": 1,
+    "explanation": "O atributo placeholder exibe um texto de dica (exemplo de preenchimento) dentro do campo, que desaparece quando o usuário começa a digitar."
+  },
+  {
+    "id": 21,
+    "topic": "Tag input",
+    "question": "Qual atributo torna um campo de formulário obrigatório?",
+    "code": "",
+    "options": [
+      "disabled",
+      "readonly",
+      "required",
+      "mandatory"
+    ],
+    "answer": 2,
+    "explanation": "O atributo required torna o campo obrigatório, impedindo o envio do formulário caso ele esteja vazio."
+  },
+  {
+    "id": 22,
+    "topic": "Tag input",
+    "question": "Qual atributo torna o campo somente leitura, impedindo edição pelo usuário mas ainda enviando seu valor?",
+    "code": "",
+    "options": [
+      "disabled",
+      "readonly",
+      "locked",
+      "static"
+    ],
+    "answer": 1,
+    "explanation": "O atributo readonly torna o campo somente leitura; o valor não pode ser editado, mas ainda é enviado junto com o formulário."
+  },
+  {
+    "id": 23,
+    "topic": "Tag input",
+    "question": "Qual atributo desabilita completamente um campo, impedindo que seu valor seja enviado no formulário?",
+    "code": "",
+    "options": [
+      "readonly",
+      "disabled",
+      "hidden",
+      "blocked"
+    ],
+    "answer": 1,
+    "explanation": "O atributo disabled desabilita o campo, impedindo interação do usuário e também impedindo que seu valor seja enviado no envio do formulário."
+  },
+  {
+    "id": 24,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input é usado para validar automaticamente endereços de e-mail?",
+    "code": "",
+    "options": [
+      "type='text'",
+      "type='mail'",
+      "type='email'",
+      "type='address'"
+    ],
+    "answer": 2,
+    "explanation": "O tipo type='email' faz o navegador validar automaticamente se o texto inserido tem formato de e-mail válido."
+  },
+  {
+    "id": 25,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input oculta os caracteres digitados pelo usuário, sendo usado para senhas?",
+    "code": "",
+    "options": [
+      "type='hidden'",
+      "type='secret'",
+      "type='password'",
+      "type='text'"
+    ],
+    "answer": 2,
+    "explanation": "O tipo type='password' oculta os caracteres digitados, sendo o mais indicado para campos de senha."
+  },
+  {
+    "id": 26,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input permite ao usuário selecionar apenas uma opção entre um grupo de escolhas?",
+    "code": "",
+    "options": [
+      "checkbox",
+      "radio",
+      "select",
+      "text"
+    ],
+    "answer": 1,
+    "explanation": "O tipo type='radio' permite seleção única entre um grupo de opções que compartilham o mesmo atributo name."
+  },
+  {
+    "id": 27,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input permite ao usuário selecionar múltiplas opções independentes?",
+    "code": "",
+    "options": [
+      "radio",
+      "checkbox",
+      "select",
+      "multiple"
+    ],
+    "answer": 1,
+    "explanation": "O tipo type='checkbox' permite que o usuário selecione múltiplas opções de forma independente."
+  },
+  {
+    "id": 28,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input é usado para permitir o envio de arquivos pelo usuário?",
+    "code": "",
+    "options": [
+      "type='upload'",
+      "type='file'",
+      "type='attach'",
+      "type='document'"
+    ],
+    "answer": 1,
+    "explanation": "O tipo type='file' permite que o usuário selecione e envie arquivos através do formulário."
+  },
+  {
+    "id": 29,
+    "topic": "Tipos de input",
+    "question": "Qual tipo de input cria um botão que envia o formulário?",
+    "code": "",
+    "options": [
+      "type='send'",
+      "type='button'",
+      "type='submit'",
+      "type='post'"
+    ],
+    "answer": 2,
+    "explanation": "O tipo type='submit' cria um botão que, ao ser clicado, envia os dados do formulário."
+  },
+  {
+    "id": 30,
+    "topic": "Exemplo de código - radio",
+    "question": "Considerando o código abaixo, o que ocorre se o usuário selecionar 'Feminino' e depois clicar em 'Masculino'?",
+    "code": "<input type=\"radio\" name=\"sexo\" value=\"M\"> Masculino\n<input type=\"radio\" name=\"sexo\" value=\"F\"> Feminino",
+    "options": [
+      "Ambas as opções ficam marcadas",
+      "Apenas a opção 'Masculino' fica marcada, pois têm o mesmo atributo name",
+      "Ocorre um erro de formulário",
+      "Nenhuma opção permanece marcada"
+    ],
+    "answer": 1,
+    "explanation": "Como os dois inputs radio compartilham o mesmo atributo name='sexo', apenas uma opção pode estar selecionada por vez; ao clicar em Masculino, ele substitui a seleção anterior."
+  },
+  {
+    "id": 31,
+    "topic": "Textarea",
+    "question": "Quais atributos definem o tamanho visível (linhas e colunas) de uma <textarea>?",
+    "code": "",
+    "options": [
+      "width e height",
+      "rows e cols",
+      "size e length",
+      "lines e columns"
+    ],
+    "answer": 1,
+    "explanation": "Os atributos rows e cols definem, respectivamente, o número de linhas e colunas visíveis em uma <textarea>."
+  },
+  {
+    "id": 32,
+    "topic": "Botões (button)",
+    "question": "Qual valor do atributo type em um <button> faz com que ele limpe todos os campos do formulário?",
+    "code": "",
+    "options": [
+      "submit",
+      "reset",
+      "clear",
+      "button"
+    ],
+    "answer": 1,
+    "explanation": "O type='reset' limpa todos os campos do formulário, retornando-os aos valores iniciais (padrão)."
+  },
+  {
+    "id": 33,
+    "topic": "Botões (button)",
+    "question": "Qual a principal diferença entre <button> e <input type='submit'>?",
+    "code": "",
+    "options": [
+      "<button> não pode enviar formulários",
+      "<button> pode conter texto, ícones e HTML interno, enquanto <input> não",
+      "<input type='submit'> é mais moderno que <button>",
+      "Não há diferença entre eles"
+    ],
+    "answer": 1,
+    "explanation": "A tag <button> permite conteúdo HTML interno como texto formatado e ícones, diferente do <input type='submit'>, que exibe apenas texto simples definido pelo atributo value."
+  },
+  {
+    "id": 34,
+    "topic": "Select e Option",
+    "question": "Qual atributo da tag <select> permite que o usuário escolha múltiplas opções simultaneamente?",
+    "code": "",
+    "options": [
+      "multiple",
+      "several",
+      "many",
+      "multi"
+    ],
+    "answer": 0,
+    "explanation": "O atributo multiple permite que o usuário selecione mais de uma opção na lista suspensa."
+  },
+  {
+    "id": 35,
+    "topic": "Optgroup",
+    "question": "Qual tag é usada para agrupar opções relacionadas dentro de um <select>?",
+    "code": "",
+    "options": [
+      "<group>",
+      "<optgroup>",
+      "<category>",
+      "<section>"
+    ],
+    "answer": 1,
+    "explanation": "A tag <optgroup> permite organizar as opções de um <select> em categorias, utilizando o atributo label para nomear o grupo."
+  },
+  {
+    "id": 36,
+    "topic": "Fieldset e Legend",
+    "question": "Qual tag é usada para agrupar visualmente elementos relacionados dentro de um formulário, criando uma borda ao redor deles?",
+    "code": "",
+    "options": [
+      "<group>",
+      "<fieldset>",
+      "<section>",
+      "<box>"
+    ],
+    "answer": 1,
+    "explanation": "A tag <fieldset> agrupa elementos relacionados de um formulário e cria uma borda visual ao redor do grupo, melhorando organização e acessibilidade."
+  },
+  {
+    "id": 37,
+    "topic": "Fieldset e Legend",
+    "question": "Qual tag define o título ou legenda de um <fieldset>?",
+    "code": "",
+    "options": [
+      "<title>",
+      "<caption>",
+      "<legend>",
+      "<header>"
+    ],
+    "answer": 2,
+    "explanation": "A tag <legend> define o título ou legenda de um <fieldset>, aparecendo posicionada dentro da borda criada por ele."
+  },
+  {
+    "id": 38,
+    "topic": "Boas práticas em formulários",
+    "question": "Segundo as boas práticas apresentadas, qual elemento deve sempre estar associado a um campo de formulário?",
+    "code": "",
+    "options": [
+      "<span>",
+      "<label>",
+      "<div>",
+      "<p>"
+    ],
+    "answer": 1,
+    "explanation": "As boas práticas recomendam sempre usar <label> associado ao campo, melhorando acessibilidade e usabilidade."
+  },
+  {
+    "id": 39,
+    "topic": "Estrutura semântica",
+    "question": "Segundo a atividade prática proposta, qual tag deve conter o nome da plataforma no topo da página?",
+    "code": "",
+    "options": [
+      "<nav>",
+      "<header>",
+      "<main>",
+      "<footer>"
+    ],
+    "answer": 1,
+    "explanation": "A tag <header> deve conter o nome da plataforma, conforme especificado na organização do código da atividade prática."
+  },
+  {
+    "id": 40,
+    "topic": "Estrutura semântica",
+    "question": "Segundo a atividade prática proposta, qual tag deve conter o formulário principal da página?",
+    "code": "",
+    "options": [
+      "<header>",
+      "<nav>",
+      "<main>",
+      "<aside>"
+    ],
+    "answer": 2,
+    "explanation": "A tag <main> deve conter o formulário principal da página, conforme a estrutura sugerida na atividade."
+  },
+  {
+    "id": 41,
+    "topic": "Comunicação Cliente-Servidor",
+    "question": "No modelo cliente-servidor da Web, qual protocolo é utilizado para a requisição e resposta entre navegador e servidor?",
+    "code": "",
+    "options": [
+      "FTP",
+      "SMTP",
+      "HTTP",
+      "SSH"
+    ],
+    "answer": 2,
+    "explanation": "O protocolo HTTP (HyperText Transfer Protocol) é utilizado para a comunicação de requisição e resposta entre cliente (navegador) e servidor."
+  },
+  {
+    "id": 42,
+    "topic": "Protocolos HTTP/HTTPS",
+    "question": "Qual é a principal diferença entre HTTP e HTTPS?",
+    "code": "",
+    "options": [
+      "HTTPS é mais lento e não é usado atualmente",
+      "HTTPS criptografa os dados usando SSL/TLS, enquanto HTTP transmite em texto puro",
+      "HTTP é usado apenas para formulários",
+      "Não há diferença entre eles"
+    ],
+    "answer": 1,
+    "explanation": "O HTTPS é a versão segura do HTTP, utilizando SSL/TLS para criptografar os dados, garantindo integridade e confidencialidade na comunicação."
+  },
+  {
+    "id": 43,
+    "topic": "Componentes de uma URL",
+    "question": "Na URL https://www.exemplo.com/pasta/recurso.html?id=1&nome=teste, o que representa a parte '?id=1&nome=teste'?",
+    "code": "",
+    "options": [
+      "O protocolo",
+      "O domínio",
+      "O caminho",
+      "Os parâmetros"
+    ],
+    "answer": 3,
+    "explanation": "A parte após o caractere ? representa os parâmetros da URL, que são dados adicionais enviados na requisição."
+  },
+  {
+    "id": 44,
+    "topic": "Métodos de Requisição HTTP",
+    "question": "Qual método HTTP é utilizado para remover um recurso do servidor?",
+    "code": "",
+    "options": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "answer": 3,
+    "explanation": "O método DELETE é utilizado para remover recursos no servidor, seguindo os padrões da API REST."
+  },
+  {
+    "id": 45,
+    "topic": "Métodos de Requisição HTTP",
+    "question": "Qual método HTTP é utilizado para atualizar um recurso já existente no servidor?",
+    "code": "",
+    "options": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "answer": 2,
+    "explanation": "O método PUT é utilizado para atualizar recursos existentes no servidor."
+  },
+  {
+    "id": 46,
+    "topic": "Códigos de Status HTTP",
+    "question": "O que significa o código de status HTTP 404?",
+    "code": "",
+    "options": [
+      "Requisição bem-sucedida",
+      "Erro interno do servidor",
+      "Recurso não encontrado",
+      "Acesso não autorizado"
+    ],
+    "answer": 2,
+    "explanation": "O código 404 (Not Found) indica que o recurso solicitado não foi encontrado no servidor."
+  },
+  {
+    "id": 47,
+    "topic": "Códigos de Status HTTP",
+    "question": "Qual código de status HTTP indica que uma requisição foi bem-sucedida?",
+    "code": "",
+    "options": [
+      "200 OK",
+      "404 Not Found",
+      "500 Internal Server Error",
+      "403 Forbidden"
+    ],
+    "answer": 0,
+    "explanation": "O código 200 OK indica que a requisição foi processada com sucesso pelo servidor."
+  },
+  {
+    "id": 48,
+    "topic": "Front-End e Back-End",
+    "question": "Quais tecnologias compõem o desenvolvimento Front-End, segundo os slides?",
+    "code": "",
+    "options": [
+      "Python, Java e Ruby",
+      "HTML, CSS e JavaScript",
+      "MySQL, PostgreSQL e MongoDB",
+      "Apache e Nginx"
+    ],
+    "answer": 1,
+    "explanation": "O Front-End (desenvolvimento do lado do cliente) é composto principalmente por HTML, CSS e JavaScript."
+  },
+  {
+    "id": 49,
+    "topic": "TAGS HTML - Formulários",
+    "question": "Segundo a tabela de tags de formulário apresentada nos slides, qual tag define uma opção em uma lista suspensa?",
+    "code": "",
+    "options": [
+      "<select>",
+      "<option>",
+      "<label>",
+      "<input>"
+    ],
+    "answer": 1,
+    "explanation": "Conforme a tabela de tags HTML de formulários, <option> define uma opção em uma lista suspensa (dentro de <select>)."
+  },
+  {
+    "id": 50,
+    "topic": "O que são Formulários em HTML",
+    "question": "Segundo os slides, para que servem os formulários em HTML?",
+    "code": "",
+    "options": [
+      "Apenas para estilizar páginas web",
+      "Para coletar dados do usuário e enviá-los ao servidor ou processá-los no cliente",
+      "Para armazenar dados exclusivamente no navegador sem envio",
+      "Para criar animações e efeitos visuais"
+    ],
+    "answer": 1,
+    "explanation": "Os formulários em HTML permitem coletar dados do usuário, enviando-os para o servidor (via action/method) ou processando-os no lado do cliente, sendo usados em login, cadastro, buscas, pesquisas, etc."
+  }
+];
+
+    function calculateScore(questionList, selected, checked) {
+      return questionList.reduce((total, item) => {
+        return total + (checked[item.id] && selected[item.id] === item.answer ? 1 : 0);
+      }, 0);
+    }
+
+    function getResultMessage(percent) {
+      if (percent >= 85) return "Excelente! Você está muito bem preparado.";
+      if (percent >= 70) return "Bom resultado. Continue praticando.";
+      if (percent >= 50) return "Você está evoluindo, mas ainda precisa revisar alguns tópicos.";
+      return "Revise os conceitos básicos e tente novamente.";
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    let state = {
+      current: 0,
+      selected: {},
+      checked: {},
+      showReview: false
+    };
+
+    const storageKey = 'simulado_state_' + btoa(encodeURIComponent(quizConfig.title)).substring(0, 16);
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.current === 'number') {
+          state.current = Math.min(parsed.current, questions.length - 1);
+          state.selected = parsed.selected || {};
+          state.checked = parsed.checked || {};
+          state.showReview = Boolean(parsed.showReview);
+        }
+      }
+    } catch (e) {}
+
+    function persistState() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function choose(index) {
+      const q = questions[state.current];
+      if (state.checked[q.id]) return;
+      state.selected[q.id] = index;
+      persistState();
+      render();
+    }
+
+    function confirmAnswer() {
+      const q = questions[state.current];
+      const chosen = state.selected[q.id];
+      if (chosen === undefined) return;
+      state.checked[q.id] = true;
+      persistState();
+      render();
+    }
+
+    function nextQuestion() {
+      if (state.current < questions.length - 1) {
+        state.current++;
+      } else {
+        state.showReview = true;
+      }
+      persistState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevQuestion() {
+      if (state.current > 0) {
+        state.current--;
+        persistState();
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function jumpToQuestion(index) {
+      state.current = index;
+      state.showReview = false;
+      persistState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      if (Object.keys(state.checked).length > 0) {
+        const confirmReset = confirm("Deseja realmente reiniciar o simulado e zerar todas as respostas?");
+        if (!confirmReset) return;
+      }
+      state.current = 0;
+      state.selected = {};
+      state.checked = {};
+      state.showReview = false;
+      persistState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const answeredCount = Object.keys(state.checked).length;
+      const score = calculateScore(questions, state.selected, state.checked);
+      const percent = questions.length ? Math.round((score / questions.length) * 100) : 0;
+      const progress = questions.length ? Math.round((answeredCount / questions.length) * 100) : 0;
+
+      if (state.showReview) {
+        const resultMessage = getResultMessage(percent);
+        let itemsHtml = '';
+        questions.forEach((item, index) => {
+          const isDone = state.checked[item.id];
+          const isOk = isDone && state.selected[item.id] === item.answer;
+          const userAns = state.selected[item.id];
+          const userAnsText = userAns !== undefined ? item.options[userAns] : "Não respondida";
+
+          itemsHtml += '<div class="review-item">' +
+            '<div class="review-meta">' +
+              '<div>' +
+                '<p class="topic-tag">Q' + item.id + ' · ' + escapeHtml(item.topic) + '</p>' +
+                '<h2 style="margin-top:4px; font-size:1.15rem; font-weight:600; color:#fff;">' + escapeHtml(item.question) + '</h2>' +
+              '</div>' +
+              '<div>' + (isOk ? '<span class="icon-symbol ok">✓</span>' : '<span class="icon-symbol bad">✕</span>') + '</div>' +
+            '</div>' +
+            (item.code ? '<pre class="code-block" style="margin-top:12px;"><code>' + escapeHtml(item.code) + '</code></pre>' : '') +
+            '<div class="review-details">' +
+              '<p>Sua resposta: <span class="' + (isOk ? 'text-ok' : 'text-bad') + '">' + escapeHtml(userAnsText) + '</span></p>' +
+              '<p>Resposta correta: <span class="text-ok">' + escapeHtml(item.options[item.answer]) + '</span></p>' +
+              '<p style="color:var(--text-muted);">' + escapeHtml(item.explanation) + '</p>' +
+            '</div>' +
+            '<button class="btn btn-outline" style="margin-top:16px;" onclick="jumpToQuestion(' + index + ')">Ver questão</button>' +
+          '</div>';
+        });
+
+        app.innerHTML = '<div class="container-wide">' +
+          '<div class="trophy-gradient-wrapper">' +
+            '<div class="trophy-card">' +
+              '<div class="trophy-icon">🏆</div>' +
+              '<h1 style="font-size:2rem; margin-top:16px;">Resultado final</h1>' +
+              '<p class="trophy-score">' + score + '/' + questions.length + '</p>' +
+              '<p class="trophy-percent">Aproveitamento: ' + percent + '%</p>' +
+              '<p class="trophy-msg">' + resultMessage + '</p>' +
+              '<div class="trophy-actions">' +
+                '<button class="btn btn-primary" onclick="resetQuiz()">↻ Refazer simulado</button>' +
+                '<button class="btn btn-secondary" onclick="jumpToQuestion(0)">Revisar questões</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="review-list">' + itemsHtml + '</div>' +
+        '</div>';
+        return;
+      }
+
+      const q = questions[state.current] || questions[0];
+      const isAnswered = Boolean(state.checked[q.id]);
+      const chosen = state.selected[q.id];
+      const isCorrect = isAnswered && chosen === q.answer;
+
+      let optionsHtml = '';
+      q.options.forEach((opt, idx) => {
+        const isSelected = chosen === idx;
+        const isRight = isAnswered && idx === q.answer;
+        const isWrong = isAnswered && isSelected && idx !== q.answer;
+
+        let optClass = 'option-btn';
+        if (isAnswered) optClass += ' locked';
+        if (isSelected && !isAnswered) optClass += ' selected';
+        if (isRight) optClass += ' correct';
+        if (isWrong) optClass += ' wrong';
+
+        let iconHtml = '';
+        if (isRight) iconHtml = '<span class="icon-symbol ok">✓</span>';
+        else if (isWrong) iconHtml = '<span class="icon-symbol bad">✕</span>';
+
+        const letter = String.fromCharCode(97 + idx);
+        optionsHtml += '<button type="button" class="' + optClass + '" onclick="choose(' + idx + ')">' +
+          '<span class="option-text">' + letter + ') ' + escapeHtml(opt) + '</span>' +
+          iconHtml +
+        '</button>';
+      });
+
+      let gridHtml = '';
+      questions.forEach((item, index) => {
+        const done = state.checked[item.id];
+        const ok = done && state.selected[item.id] === item.answer;
+        const isCurr = index === state.current;
+
+        let pillClass = 'nav-pill';
+        if (isCurr) pillClass += ' current';
+        if (done && ok) pillClass += ' ok';
+        if (done && !ok) pillClass += ' bad';
+
+        gridHtml += '<button type="button" class="' + pillClass + '" onclick="jumpToQuestion(' + index + ')">' + item.id + '</button>';
+      });
+
+      app.innerHTML = '<div class="container">' +
+        '<header>' +
+          '<div class="header-top">' +
+            '<div>' +
+              '<div class="badge"><span>' + escapeHtml(quizConfig.badge) + '</span></div>' +
+              '<h1>' + escapeHtml(quizConfig.title) + '</h1>' +
+              '<p class="subtitle">' + escapeHtml(quizConfig.subtitle) + '</p>' +
+            '</div>' +
+            '<div class="score-card">' +
+              '<p class="score-card-label">Pontuação atual</p>' +
+              '<p class="score-card-val">' + score + '/' + (answeredCount || 0) + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="progress-track">' +
+            '<div class="progress-fill" style="width: ' + progress + '%;"></div>' +
+          '</div>' +
+          '<p class="progress-text">Respondidas: ' + answeredCount + '/' + questions.length + ' (' + progress + '%)</p>' +
+        '</header>' +
+        '<div class="panel">' +
+          '<div class="question-header">' +
+            '<div>' +
+              '<p class="topic-tag">Q' + q.id + ' de ' + questions.length + ' · ' + escapeHtml(q.topic) + '</p>' +
+              '<h2 class="question-text">' + escapeHtml(q.question) + '</h2>' +
+            '</div>' +
+            (isAnswered
+              ? (isCorrect
+                  ? '<div class="status-badge ok"><span class="icon-symbol ok">✓</span> Acertou</div>'
+                  : '<div class="status-badge bad"><span class="icon-symbol bad">✕</span> Errou</div>')
+              : '') +
+          '</div>' +
+          (q.code ? '<pre class="code-block"><code>' + escapeHtml(q.code) + '</code></pre>' : '') +
+          '<div class="options-grid">' + optionsHtml + '</div>' +
+          (isAnswered
+            ? '<div class="explanation-box">' +
+                '<p class="explanation-title">Explicação</p>' +
+                '<p class="explanation-text">' + escapeHtml(q.explanation) + '</p>' +
+              '</div>'
+            : '') +
+          '<div class="actions-row">' +
+            '<button type="button" class="btn btn-secondary" onclick="prevQuestion()"' + (state.current === 0 ? ' disabled' : '') + '>← Anterior</button>' +
+            (!isAnswered
+              ? '<button type="button" class="btn btn-primary" onclick="confirmAnswer()"' + (chosen === undefined ? ' disabled' : '') + '>Confirmar resposta</button>'
+              : '<button type="button" class="btn btn-primary" onclick="nextQuestion()">' + (state.current === questions.length - 1 ? 'Ver resultado final' : 'Próxima') + ' →</button>') +
+          '</div>' +
+          '<div class="keyboard-hint">Atalhos: Teclas 1 a 4 ou A a D para selecionar • Enter para confirmar/avançar • Setas ← → para navegar</div>' +
+        '</div>' +
+        '<div class="nav-grid">' + gridHtml + '</div>' +
+      '</div>';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (state.showReview) return;
+      const q = questions[state.current];
+      if (!q) return;
+      const isAnswered = Boolean(state.checked[q.id]);
+
+      if (!isAnswered) {
+        if (['1', 'a', 'A'].includes(e.key)) choose(0);
+        else if (['2', 'b', 'B'].includes(e.key)) choose(1);
+        else if (['3', 'c', 'C'].includes(e.key)) choose(2);
+        else if (['4', 'd', 'D'].includes(e.key)) choose(3);
+        else if (e.key === 'Enter') confirmAnswer();
+      } else {
+        if (e.key === 'Enter') nextQuestion();
+      }
+
+      if (e.key === 'ArrowLeft') prevQuestion();
+      else if (e.key === 'ArrowRight' && isAnswered) nextQuestion();
+    });
+
+    render();
+
+  </script>
+</body>
+</html>
